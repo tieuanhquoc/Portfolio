@@ -1,0 +1,30 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using BuildingBlocks.Data.Entities
+@model IEnumerable<BuildingBlocks.Data.Entities.UserSkill>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Detail";
+}
+<section class="project-section active">
+    <h1 class="project-heading">Some of my project</h1>
+    <div class="project-container">
+        @foreach (var item in Model ?? new List<UserSkill>())
+        {
+            <div class="project-card">
+                @{ var images = item.Project.Split(','); }
+                <img src="~/images/@images[0]" class="project-img" alt="@item.Skill">
+                <div class="project-content">
+                    <h1 class="project-title">@item.ShortTitle</h1>
+                    <p class="project-info">
+                        @item.TitleProject
+                    </p>
+                    <div class="project-btn-grp">
+                        <button class="project-btn github">github</button>
+                        <a href="/UserSkills/Edit/@item.Id" class="project-btn live">Edit</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <a class="form-submit-btn" asp-action="Create" asp-controller="UserSkills" asp-area="Member">Add New Project</a>
+    </div>
+</section>

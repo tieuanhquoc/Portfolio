@@ -1,0 +1,74 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model MainApp.Models.UserSkillCreate
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Create";
+}
+
+<section class="contact-section active">
+    <h1 class="project-heading">Add project</h1>
+    <div class="row" style="width:80%">
+        <div class="col-md-4">
+            <form asp-action="Create" asp-area="Member" asp-controller="UserSkills" class="contact-form" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Information" class="control-label"></label>
+                    <input asp-for="Information" class="form-control"/>
+                    <span asp-validation-for="Information" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Skill" class="control-label"></label>
+                    <input asp-for="Skill" class="form-control"/>
+                    <span asp-validation-for="Skill" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PercentSkill" class="control-label"></label>
+                    <input asp-for="PercentSkill" class="form-control"/>
+                    <span asp-validation-for="PercentSkill" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Images" class="control-label"></label>
+                    <div class="custom-file">
+                        <input asp-for="Images" class="custom-file-input" id="customFile" type="file" multiple>
+                        <label class="custom-file-label" for="customFile">Choose file</label>
+                    </div>
+                    <span asp-validation-for="Images" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Time" class="control-label"></label>
+                    <input asp-for="Time" class="form-control"/>
+                    <span asp-validation-for="Time" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="TitleProject" class="control-label"></label>
+                    <input asp-for="TitleProject" class="form-control"/>
+                    <span asp-validation-for="TitleProject" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ShortTitle" class="control-label"></label>
+                    <input asp-for="ShortTitle" class="form-control"/>
+                    <span asp-validation-for="ShortTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="form-submit-btn">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</section>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
+<style>
+    .form-group label{
+        color: white;
+    }
+    
+    .form-group span{
+        color: white;
+    }
+</style>

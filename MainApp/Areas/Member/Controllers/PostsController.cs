@@ -25,45 +25,45 @@ public class PostsController : ApiBaseController
         var userId = User.GetId();
         var userDetails = await _databaseContext.Users.FindAsync(userId);
         ViewData["User"] = userDetails;
-        ViewData["alluser"] = await _databaseContext.Users.Where(x=>x.Role == UserRole.Member).ToListAsync();
+        ViewData["alluser"] = await _databaseContext.Users.Where(x => x.Role == UserRole.Member).ToListAsync();
         ViewData["Comment"] = await _databaseContext.Comments.Include(c => c.Post).Include(c => c.User).ToListAsync();
-        return View("~/Areas/Member/Views/Post/Index.cshtml", posts);
+        return View("~/Areas/Member/Views/Posts/Index.cshtml", posts);
     }
-    
+
     public IActionResult Create()
     {
-        return View("~/Areas/Member/Views/Post/Create.cshtml");
+        return View("~/Areas/Member/Views/Posts/Create.cshtml");
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(PostModel postModel)
     {
-        var user = HttpContext.Session.GetString("user");
+        var userId = User.GetId();
         if (ModelState.IsValid)
         {
             var images = await UploadedFile(postModel.Images);
-            postModel.Title = images;
-            
-            var post= new Post
+            var post = new Post
             {
-                
-            }
-            post.Posttile = uniqueFileName;
-            post.Status = 1;
-            post.UserId = Convert.ToInt32(user);
-            post.Totallike = 0;
-            _databaseContext.Add(postModel);
+                Note = postModel.Note,
+                Title = postModel.Title,
+                Like = 0,
+                Status = PostStatus.Enabled,
+                CreatedAt = DateTime.Now,
+                UrlImages = images,
+                UserId = userId
+            };
+            
+
+            await _databaseContext.Posts.AddAsync(post);
             await _databaseContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-        ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", post.UserId);
-        return View(post);
+
+        return View("~/Areas/Member/Views/Posts/Create.cshtml", postModel);
     }
-    
-    
-    
-    
+
+
     private async Task<string> UploadedFile(List<IFormFile> files)
     {
         var fileNames = new List<string>();

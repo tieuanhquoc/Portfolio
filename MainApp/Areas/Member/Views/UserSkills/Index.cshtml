@@ -9,7 +9,7 @@
 <section class="about-section active">
     <div class="about">
         <div class="about-img-container">
-            <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : string.IsNullOrEmpty(User.GetAvatar()))" class="about-img" alt="">
+            <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : User.GetAvatar())" class="about-img" alt="">
             <button class="download-cv-btn">Download cv</button>
         </div>
 

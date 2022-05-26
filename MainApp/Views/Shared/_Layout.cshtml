@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="~/style.css">
-
 </head>
 @if (TempData["AlertMessage"] != null)
 {
@@ -24,13 +23,19 @@
             <a asp-action="Details" asp-controller="UserSkills">Project</a>
         </li>
         <li class="link">
-            <a asp-action="Index" asp-controller="UserSkills">Project</a>
+            <a asp-action="Index" asp-controller="UserSkills">About</a>
         </li>
         <li class="link">
-            <a href="/Posts/Index">Forum</a>
+            <a asp-action="Index" asp-controller="Posts">Forum</a>
         </li>
         <li class="link">
-            <a href="/Users/Edit">My Profiles</a>
+            <a asp-action="Index" asp-controller="News">News</a>
+        </li>
+        <li class="link">
+            <a asp-action="Index" asp-controller="Posts">Chat box</a>
+        </li>
+        <li class="link">
+            <a asp-action="Edit" asp-controller="Users">My Profiles</a>
         </li>
         <li class="link">
             <a asp-action="LogOut" asp-controller="Auth">Logout</a>
@@ -39,7 +44,7 @@
     </ul>
     <form asp-controller="UserSkills" asp-action="IndexSearch" method="post" class="contact-form">
         <div class="input-group">
-            <input name="username" type="text" class="form-control search-input w-75" placeholder="Search for CV..." aria-label="Search" aria-describedby="search-addon">
+            <input style="margin: 0" name="username" type="text" class="form-control search-input" placeholder="Search for CV..." aria-label="Search" aria-describedby="search-addon">
         </div>
     </form>
 </nav>
@@ -48,6 +53,8 @@
         @RenderBody()
     </main>
 </div>
+
+<div></div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

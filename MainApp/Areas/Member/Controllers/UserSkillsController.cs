@@ -139,6 +139,21 @@ public class UserSkillsController : ApiBaseController
         });
     }
 
+
+    // GET: UserSkills/Delete/5
+    public async Task<IActionResult> Delete(int id)
+    {
+        var userSkill = await _databaseContext.UserSkills.FirstOrDefaultAsync(m =>
+            m.Id == id &&
+            m.UserId == User.GetId()
+        );
+        if (userSkill == null)
+            return NotFound();
+        _databaseContext.UserSkills.Remove(userSkill);
+        await _databaseContext.SaveChangesAsync();
+        return View("~/Areas/Member/Views/UserSkills/Index.cshtml");
+    }
+
     [HttpPost]
     public async Task<IActionResult> IndexSearch()
     {

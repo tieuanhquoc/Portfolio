@@ -1,0 +1,106 @@
+﻿@using BuildingBlocks.Data.Entities
+@using BuildingBlocks.Extensions
+@model IEnumerable<BuildingBlocks.Data.Entities.Post>
+@{
+    var comments = ViewData["Comment"] as IEnumerable<Comment>;
+    var user = ViewData["User"] as User;
+    var users = ViewData["alluser"] as IEnumerable<User>;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="forum-section active">
+    <div class="wrapper">
+
+        <form class="left-col">
+            <button asp-controller="Posts" asp-action="Create" style="background: #ff4f4f; padding: 10px 20px; color: white; border-radius: 5px">New Post</button>
+            @foreach (var item in Model ?? new List<Post>())
+            {
+                <div class="post">
+                    <div class="info">
+                        <div class="user">
+                            <div class="profile-pic">
+                                <img src="~/images/@(string.IsNullOrEmpty(item.User.Avatar) ? "default-avatar.png" : item.User.Avatar)" alt="@item.User.Username">
+                            </div>
+                            <p class="username">@item.User.Username</p>
+                        </div>
+                        @if (User.GetId() == item.UserId)
+                        {
+                            <button style="background: #ff4f4f; padding: 5px 10px; color: white; border-radius: 5px">Delete</button>
+                        }
+                    </div>
+                    @{ var images = item.UrlImages.Split(','); }
+                    <img src="~/images/@images[0]" class="post-image" alt="@item.Title">
+                    <div class="post-content">
+                        <div class="reaction-wrapper">
+                            <a href="/Posts/Like/@item.Id">
+                                <img src="~/img/heart_outline.png" class="icon" alt="">
+                            </a>
+                        </div>
+                        <p class="likes">@item.Like likes</p>
+                        <h2 style="color: white; padding: 5px 5px 5px 0">@item.Title</h2>
+                        <p class="description">
+                            @item.Note
+                        </p>
+                    </div>
+                    <div>
+                        @foreach (var comment in comments ?? new List<Comment>())
+                        {
+                            if (comment.PostId == item.Id)
+                            {
+                                <li class="media">
+                                    @if (comment.UserId == user?.Id)
+                                    {
+                                        <p class="fs-8 pt-2" style="color:white">
+                                            Me: @comment.Content
+                                            <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">
+                                                <i class='bx bx-dots-horizontal-rounded'>Delete</i>
+                                            </a>
+                                        </p>
+                                    }
+                                    else
+                                    {
+                                        <p class="fs-8 pt-2" style="color:white">
+                                            @comment.User.Username: @comment.Content
+                                        </p>
+                                    }
+                                </li>
+                            }
+                        }
+                    </div>
+                    <br/>
+                    <hr style="color:azure"/>
+
+                    <form asp-controller="Comments" asp-action="Create" asp-route-id="@item.Id" as method="post">
+                        <div class="comment-wrapper">
+                            <img src="img/smile.png" class="icon" alt="">
+                            <input name="content" type="text" class="comment-box" placeholder="Add a comment">
+                            <button class="comment-btn">post</button>
+                        </div>
+                    </form>
+                </div>
+            }
+
+        </form>
+        <div class="right-col">
+
+            <p class="suggestion-text">Suggestions for you</p>
+            @foreach (var item in (users ?? new List<User>()).TakeLast(5))
+            {
+                <div class="profile-card">
+                    <div class="profile-pic">
+                        <img src="~/images/@(string.IsNullOrEmpty(item.Avatar) ? "default-avatar.png" : item.Avatar)" alt="">
+                    </div>
+                    <div>
+                        <p class="username">@item.Username</p>
+                    </div>
+                    <form asp-controller="UserSkills" asp-action="IndexSearch" method="post" class="contact-form">
+                        <div class="input-group">
+                            <input hidden name="username" type="text" class="form-control search-input w-75" value="@item.Username">
+                        </div>
+                        <button class="action-btn">Seen CV</button>
+                    </form>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>

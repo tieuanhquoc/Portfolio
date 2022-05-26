@@ -20,7 +20,7 @@ public static class DataSeeding
                 Email = "admin@yobmail.com",
                 Phone = "0982456789",
                 AboutMe = "No thing",
-                Adress = "Địa chỉ",
+                Address = "Địa chỉ",
                 Status = UserStatus.Enabled,
                 Role = UserRole.Admin,
                 CreatedAt = DateTime.Now
@@ -34,7 +34,7 @@ public static class DataSeeding
                 Email = "user@yobmail.com",
                 Phone = "0982456799",
                 AboutMe = "No thing",
-                Adress = "Địa chỉ",
+                Address = "Địa chỉ",
                 Status = UserStatus.Enabled,
                 Role = UserRole.Member,
                 CreatedAt = DateTime.Now

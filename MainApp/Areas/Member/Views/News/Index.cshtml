@@ -1,0 +1,30 @@
+﻿@using BuildingBlocks.Data.Entities
+@model IEnumerable<BuildingBlocks.Data.Entities.New>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="forum-section active">
+    <div class="wrapper">
+        <form class="left-col">
+            <button asp-controller="News" asp-action="Create" style="background: #ff4f4f; padding: 10px 20px; color: white; border-radius: 5px">New News</button>
+            @foreach (var item in Model ?? new List<New>())
+            {
+                <div class="post">
+                    @{ var images = item.Images.Split(','); }
+                    <img src="~/images/@images[0]" class="post-image" alt="@item.Title">
+                    <div class="post-content">
+                        <div class="reaction-wrapper">
+                            <a href="/Posts/Like/@item.Id">
+                                <img src="~/img/heart_outline.png" class="icon" alt="">
+                            </a>
+                        </div>
+                        <h2 style="color: white; padding: 5px 5px 5px 0">@item.Title</h2>
+                        <p class="description">
+                            @item.Content
+                        </p>
+                    </div>
+                </div>
+            }
+        </form>
+    </div>
+</section>

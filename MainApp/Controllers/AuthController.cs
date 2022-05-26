@@ -76,7 +76,7 @@ public class AuthController : Controller
                         new Claim("Avatar", user.Avatar),
                         new Claim("Role", user.Role.ToString()),
                         new Claim("About", user.AboutMe),
-                        new Claim("Address", user.Adress),
+                        new Claim("Address", user.Address),
                         new Claim(ClaimTypes.Role, user.Role.ToString()),
                     },
                     CookieAuthenticationDefaults.AuthenticationScheme

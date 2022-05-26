@@ -1,5 +1,4 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@using BuildingBlocks.Data.Entities
+﻿@using BuildingBlocks.Data.Entities
 @model IEnumerable<BuildingBlocks.Data.Entities.UserSkill>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -18,10 +17,11 @@
                     <p class="project-info">
                         @item.TitleProject
                     </p>
-                    <div class="project-btn-grp">
-                        <button class="project-btn github">github</button>
-                        <a href="/UserSkills/Edit/@item.Id" class="project-btn live">Edit</a>
-                    </div>
+                    <form style="display: flex; width: 100%; justify-content: center">
+                        <button style="margin: 5px;padding: 10px; width: 100%" class="project-btn github">github</button>
+                        <button asp-controller="UserSkills" asp-action="Edit" asp-route-id="@item.Id" style="margin: 5px;padding: 10px; width: 100%;text-align: center; align-items: center" class="project-btn live">Edit</button>
+                        <button asp-controller="UserSkills" asp-action="Delete" asp-route-id="@item.Id" style="margin: 5px;padding: 10px; width: 100%;text-align: center; align-items: center; background: #FF4F4F" class="project-btn">Xóa</button>
+                    </form>
                 </div>
             </div>
         }

@@ -18,7 +18,7 @@ public class UserConfig : IEntityTypeConfiguration<User>
         builder.Property(x => x.Email).IsRequired(false);
         builder.Property(x => x.Phone).IsRequired(false);
         builder.Property(x => x.AboutMe).IsRequired(false);
-        builder.Property(x => x.Adress).IsRequired(false);
+        builder.Property(x => x.Address).IsRequired(false);
         builder.Property(x => x.Role).HasDefaultValue(UserRole.Member).IsRequired();
         builder.Property(x => x.Status).HasDefaultValue(UserStatus.Enabled).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();

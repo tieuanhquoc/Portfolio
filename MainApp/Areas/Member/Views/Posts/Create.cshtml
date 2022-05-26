@@ -1,9 +1,9 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model MainApp.Models.PostModel
+﻿@model MainApp.Models.PostModel
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
 <section class="contact-section active">
     <h1 class="project-heading">Post</h1>
     <div class="row" style="width:80%">
@@ -11,20 +11,24 @@
             <form asp-action="Create" class="contact-form" enctype="multipart/form-data">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control"/>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
                     <label asp-for="Note" class="control-label"></label>
-                    <input asp-for="Note" class="form-control" />
+                    <textarea rows="3" asp-for="Note" class="form-control"></textarea>
                     <span asp-validation-for="Note" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="" class="control-label"></label>
                     <div class="custom-file">
-                        <input asp-for="" class="custom-file-input" id="customFile" type="file" multiple>
-                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        <label asp-for="Images" class="control-label"></label>
+                        <input asp-for="Images" class="custom-file-input" id="customFile" type="file" multiple>
+                        <span asp-validation-for="Images" class="text-danger"></span>
                     </div>
-                    <span asp-validation-for="Images" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Create" class="btn btn-primary"/>
                 </div>
             </form>
         </div>
@@ -33,5 +37,11 @@
 </section>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 }
+
+<style>
+    form label{
+        color: white;
+    }
+</style>

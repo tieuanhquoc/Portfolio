@@ -12,14 +12,14 @@ namespace BuildingBlocks.Data.Entities
         public string Email { get; set; }
         public string Phone { get; set; }
         public string AboutMe { get; set; }
-        public string Adress { get; set; }
+        public string Address { get; set; }
         public UserStatus Status { get; set; }
         public UserRole Role { get; set; }
         public DateTime CreatedAt { get; set; }
+        public virtual ICollection<Room> RoomCreated { get; set; }
+        public virtual ICollection<Room> RooJoined { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Message> Messages { get; set; }
-        public virtual ICollection<Message> MessageSends { get; set; }
-        public virtual ICollection<Message> MessageReceivers { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<UserSkill> UserSkills { get; set; }
     }

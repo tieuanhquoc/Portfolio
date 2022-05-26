@@ -13,6 +13,7 @@ public class PostConfig : IEntityTypeConfiguration<Post>
         builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
         builder.Property(x => x.Note).IsRequired(false);
         builder.Property(x => x.Title).IsRequired(false);
+        builder.Property(x => x.UrlImages).IsRequired(false);
         builder.Property(x => x.Like).HasDefaultValue(0).IsRequired();
         builder.Property(x => x.Status).HasDefaultValue(PostStatus.Enabled).IsRequired();
         builder.Property(x => x.CreatedAt).IsRequired();

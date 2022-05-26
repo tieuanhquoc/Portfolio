@@ -1,0 +1,69 @@
+﻿@model MainApp.Models.UserModels
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<section class="contact-section active">
+    <h1 class="project-heading">Add project</h1>
+    <div class="row" style="width:80%">
+        <div class="col-md-4">
+            <form asp-action="Edit" asp-controller="Users" class="contact-form" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-group" hidden>
+                    <label asp-for="Username" class="control-label" style="color:white"></label>
+                    <input asp-for="Username" class="form-control" />
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Password" class="control-label" style="color:white"></label>
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <img src="~/images/@(string.IsNullOrEmpty(Model?.Avatar) ? "default-avatar.png" : Model?.Avatar)" width="200" height="200" alt="@Model?.Username"/>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Images" class="control-label"></label>
+                    <div class="custom-file">
+                        <input asp-for="Images" class="custom-file-input" id="customFile" type="file" multiple>
+                    </div>
+                    <span asp-validation-for="Images" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label" style="color:white"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Phone" class="control-label" style="color:white"></label>
+                    <input asp-for="Phone" class="form-control" />
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="AboutMe" class="control-label" style="color:white"></label>
+                    <input asp-for="AboutMe" class="form-control" />
+                    <span asp-validation-for="AboutMe" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label" style="color:white"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden>
+                    <label asp-for="Status" class="control-label"></label>
+                    <input asp-for="Status" class="form-control" />
+                    <span asp-validation-for="Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }

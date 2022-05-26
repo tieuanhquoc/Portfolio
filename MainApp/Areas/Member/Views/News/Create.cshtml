@@ -15,38 +15,38 @@
                     <input rows="3" asp-for="Source" class="form-control"/>
                     <span asp-validation-for="Source" class="text-danger"></span>
                 </div>
-                @if (!string.IsNullOrEmpty(Model?.Content))
-                {
-                    <div class="form-group">
-                        <label asp-for="Title" class="control-label"></label>
-                        <input asp-for="Title" class="form-control"/>
-                        <span asp-validation-for="Title" class="text-danger"></span>
+                @* @if (!string.IsNullOrEmpty(Model?.Content)) *@
+                @* { *@
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control"/>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Images" class="control-label"></label>
+                    <div class="custom-file">
+                        <input asp-for="Images" class="custom-file-input" id="customFile" type="file" multiple>
+                        <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>
-                    <div class="form-group">
-                        <label asp-for="Images" class="control-label"></label>
-                        <div class="custom-file">
-                            <input asp-for="Images" class="custom-file-input" id="customFile" type="file" multiple>
-                            <label class="custom-file-label" for="customFile">Choose file</label>
-                        </div>
-                        <span asp-validation-for="Images" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Content" class="control-label"></label>
-                        <textarea rows="3" asp-for="Content" class="form-control"></textarea>
-                        <span asp-validation-for="Content" class="text-danger"></span>
-                    </div>
-                }
+                    <span asp-validation-for="Images" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label"></label>
+                    <textarea rows="3" asp-for="Content" class="form-control"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+                @* } *@
 
                 <div class="form-group">
-                    @if (string.IsNullOrEmpty(Model?.Content))
-                    {
-                        <a type="submit" href="/News/Crawl?source=" class="btn btn-primary">Crawl</a>
-                    }
-                    else
-                    {
-                        <input type="submit" value="Create" class="btn btn-primary"/>
-                    }
-      
+                    @* @if (string.IsNullOrEmpty(Model?.Content)) *@
+                    @* { *@
+                    @*     <a type="submit" href="/News/Crawl?source=" class="btn btn-primary">Crawl</a> *@
+                    @* } *@
+                    @* else *@
+                    @* { *@
+                    <a type="submit" asp-controller="News" asp-action="Create" value="Create" class="btn btn-primary"></a>
+                    @* } *@
+
                 </div>
             </form>
         </div>

@@ -50,6 +50,13 @@ namespace BuildingBlocks.Helpers
 
         public static string RemoveHtml(this string text)
         {
+            const string htmlTagPattern = "<.*?>";
+            var regexCss = new Regex("(\\<script(.+?)\\</script\\>)|(\\<style(.+?)\\</style\\>)",
+                RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            text = regexCss.Replace(text, string.Empty);
+            text = Regex.Replace(text, htmlTagPattern, string.Empty);
+            text = Regex.Replace(text, @"^\s+$[\r\n]*", "", RegexOptions.Multiline);
+            text = text.Replace("&nbsp;", string.Empty);
             return HtmlReg.Replace(text, "");
         }
 

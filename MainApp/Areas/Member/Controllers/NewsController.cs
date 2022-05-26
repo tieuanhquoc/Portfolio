@@ -4,6 +4,7 @@ using BuildingBlocks.Helpers;
 using MainApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using NUglify;
 
 namespace MainApp.Areas.Member.Controllers;
 
@@ -34,13 +35,22 @@ public class NewsController : ApiBaseController
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(NewModel newModel)
     {
+        if (!Uri.IsWellFormedUriString(newModel.Source, UriKind.Absolute))
+            return NotFound();
+
+        var client = new HttpClient();
+        var html = await client.GetStringAsync(newModel.Source);
+
+        var result = Uglify.HtmlToText(html);
+
         var images = await UploadedFile(newModel.Images);
         var newEntity = new New
         {
             Title = newModel.Title,
-            Content = newModel.Content,
+            Content = result.Code,
             Images = images,
             Source = newModel.Source
         };

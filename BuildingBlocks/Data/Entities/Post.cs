@@ -8,6 +8,7 @@ namespace BuildingBlocks.Data.Entities
         public string Note { get; set; }
         public string Title { get; set; }
         public int Like { get; set; }
+        public string UrlImages { get; set; }
         public PostStatus Status { get; set; }
 
         public DateTime CreatedAt { get; set; }

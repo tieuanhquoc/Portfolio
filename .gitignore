@@ -407,10 +407,3 @@ ASALocalRun/
 # SonarQube
 .scannerwork
 .sonarqube
-
-# File
-ffmpeg
-ffprobe
-ffmpeg.*
-ffprobe.*
-wwwroot/

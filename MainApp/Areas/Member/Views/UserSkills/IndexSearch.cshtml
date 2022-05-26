@@ -1,0 +1,74 @@
+﻿@using BuildingBlocks.Extensions
+@model IEnumerable<BuildingBlocks.Data.Entities.UserSkill>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="about-section active">
+    <div class="about">
+        <div class="about-img-container">
+            <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : string.IsNullOrEmpty(User.GetAvatar()))" class="about-img" alt="">
+            <button class="download-cv-btn">CV of @User.GetName()</button>
+        </div>
+
+        <p class="about-info">
+            @User.GetAbout()
+        </p>
+    </div>
+
+    <div class="skill-section">
+        <h1 class="heading">Skills</h1>
+        <div class="skill-container">
+            @foreach (var item in Model)
+            {
+                <div class="skill-card">
+                    <img src="img/html.png" class="skill-img" alt="">
+                    <div class="skill-level">@item.PercentSkill</div>
+                    <h1 class="skill-name">@item.Skill</h1>
+                    <p class="skill-info">
+                        @item.Information
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="timeline">
+        <h1 class="heading">education and experience</h1>
+        @foreach (var item in Model)
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">@item.Time</h1>
+                    <p class="card-detail">
+                        @item.TitleProject
+                    </p>
+                </div>
+            </div>
+        }
+
+
+    </div>
+
+
+</section>
+<section class="project-section active">
+    <h1 class="project-heading">Some of @User.GetName() project</h1>
+    <div class="project-container">
+        @foreach (var item in Model)
+        {
+            <div class="project-card">
+                <img src="~/images/@item.Project" class="project-img" alt="">
+                <div class="project-content">
+                    <h1 class="project-title">@item.ShortTitle</h1>
+                    <p class="project-info">
+                        @item.TitleProject
+                    </p>
+                    <div class="project-btn-grp">
+                        <button class="project-btn github">github</button>
+                    </div>
+                </div>
+            </div>
+        }
+      
+    </div>
+</section>

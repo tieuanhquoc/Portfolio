@@ -1,5 +1,5 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-@model MainApp.Models.UserSkillCreate
+@model MainApp.Models.UserSkillModel
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -28,8 +28,8 @@
                     <span asp-validation-for="PercentSkill" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="Images" class="control-label"></label>
                     <div class="custom-file">
+                    <label asp-for="Images" class="control-label"></label>
                         <input asp-for="Images" class="custom-file-input" id="customFile" type="file" multiple>
                         <label class="custom-file-label" for="customFile">Choose file</label>
                     </div>

@@ -21,10 +21,10 @@
             <a asp-action="Index" asp-controller="Home">Home</a>
         </li>
         <li class="link">
-            <a href="/UserSkills/Details">Project</a>
+            <a asp-action="Details" asp-controller="UserSkills">Project</a>
         </li>
         <li class="link">
-            <a href="/UserSkills/Index">About</a>
+            <a asp-action="Index" asp-controller="UserSkills">Project</a>
         </li>
         <li class="link">
             <a href="/Posts/Index">Forum</a>
@@ -37,11 +37,11 @@
         </li>
 
     </ul>
-    @* <form asp-controller="UserSkills" asp-action="IndexSearch" method="post" class="contact-form"> *@
-    @*     <div class="input-group"> *@
-    @*         <input name="username" type="text" class="form-control search-input w-75" placeholder="Search for CV..." aria-label="Search" aria-describedby="search-addon"> *@
-    @*     </div> *@
-    @* </form> *@
+    <form asp-controller="UserSkills" asp-action="IndexSearch" method="post" class="contact-form">
+        <div class="input-group">
+            <input name="username" type="text" class="form-control search-input w-75" placeholder="Search for CV..." aria-label="Search" aria-describedby="search-addon">
+        </div>
+    </form>
 </nav>
 <div class="container">
     <main role="main" class="pb-3">

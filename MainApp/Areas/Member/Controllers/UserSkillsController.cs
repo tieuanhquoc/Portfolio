@@ -43,21 +43,21 @@ public class UserSkillsController : ApiBaseController
     }
 
     [HttpPost]
-    public async Task<IActionResult> Create(UserSkillCreate skillCreate)
+    public async Task<IActionResult> Create(UserSkillModel userSkillModel)
     {
         if (ModelState.IsValid)
         {
-            var images = await UploadedFile(skillCreate.Images);
+            var images = await UploadedFile(userSkillModel.Images);
 
             var userSkill = new UserSkill
             {
                 Project = images,
-                Information = skillCreate.Information,
-                Skill = skillCreate.Skill,
-                PercentSkill = skillCreate.PercentSkill,
-                Time = skillCreate.Time,
-                ShortTitle = skillCreate.Time,
-                TitleProject = skillCreate.TitleProject,
+                Information = userSkillModel.Information,
+                Skill = userSkillModel.Skill,
+                PercentSkill = userSkillModel.PercentSkill,
+                Time = userSkillModel.Time,
+                ShortTitle = userSkillModel.Time,
+                TitleProject = userSkillModel.TitleProject,
                 UserId = User.GetId(),
                 CreatedAt = DateTime.Now
             };
@@ -67,7 +67,87 @@ public class UserSkillsController : ApiBaseController
             return RedirectToAction("Index", "UserSkills", new {area = "Member"});
         }
 
-        return View(skillCreate);
+        return View("~/Areas/Member/Views/UserSkills/Create.cshtml", userSkillModel);
+    }
+
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var userSkill = await _databaseContext.UserSkills.FindAsync(id);
+        if (userSkill == null)
+        {
+            return NotFound();
+        }
+
+        return View("~/Areas/Member/Views/UserSkills/Edit.cshtml", new UserSkillModel
+        {
+            Id = userSkill.Id,
+            Information = userSkill.Information,
+            Skill = userSkill.Skill,
+            PercentSkill = userSkill.PercentSkill,
+            Project = userSkill.Project,
+            Time = userSkill.Time,
+            TitleProject = userSkill.TitleProject,
+            ShortTitle = userSkill.ShortTitle,
+        });
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(int id, UserSkillModel userSkillModel)
+    {
+        if (id != userSkillModel.Id)
+        {
+            return NotFound();
+        }
+
+        var userSkill = await _databaseContext.UserSkills.FindAsync(id);
+        if (userSkill == null)
+            return NotFound();
+
+        if (ModelState.IsValid)
+        {
+            var images = await UploadedFile(userSkillModel.Images);
+
+            userSkill.Information = userSkillModel.Information;
+            userSkill.Skill = userSkillModel.Skill;
+            userSkill.PercentSkill = userSkillModel.PercentSkill;
+            userSkill.Time = userSkillModel.Time;
+            userSkill.ShortTitle = userSkillModel.ShortTitle;
+            userSkill.TitleProject = userSkillModel.TitleProject;
+            userSkill.Project = string.IsNullOrEmpty(images) ? userSkill.Project : images;
+
+            _databaseContext.UserSkills.Update(userSkill);
+            await _databaseContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+        }
+
+        return View("~/Areas/Member/Views/UserSkills/Edit.cshtml", new UserSkillModel
+        {
+            Id = userSkill.Id,
+            Information = userSkill.Information,
+            Skill = userSkill.Skill,
+            PercentSkill = userSkill.PercentSkill,
+            Project = userSkill.Project,
+            Time = userSkill.Time,
+            TitleProject = userSkill.TitleProject,
+            ShortTitle = userSkill.ShortTitle,
+        });
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> IndexSearch()
+    {
+        string username = HttpContext.Request.Form["username"];
+        var users = await _databaseContext.Users.Where(x => x.Username.ToLower().Equals(username.ToLower()))
+            .ToListAsync();
+        var userIds = users.Select(x => x.Id).ToList();
+        var userSkills = await _databaseContext.UserSkills.Where(x => userIds.Contains(x.UserId)).ToListAsync();
+        return View("~/Areas/Member/Views/UserSkills/IndexSearch.cshtml", userSkills);
     }
 
     private async Task<string> UploadedFile(List<IFormFile> files)

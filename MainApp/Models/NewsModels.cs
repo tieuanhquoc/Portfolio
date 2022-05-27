@@ -2,7 +2,7 @@
 
 namespace MainApp.Models;
 
-public class NewModel : New
+public class NewsModel : News
 {
     public List<IFormFile> Images { get; set; }
 }

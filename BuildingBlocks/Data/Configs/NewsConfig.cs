@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace BuildingBlocks.Data.Configs;
 
-public class NewConfig : IEntityTypeConfiguration<New>
+public class NewsConfig : IEntityTypeConfiguration<News>
 {
-    public void Configure(EntityTypeBuilder<New> builder)
+    public void Configure(EntityTypeBuilder<News> builder)
     {
         builder.ToTable("New");
         builder.HasKey(x => x.Id);

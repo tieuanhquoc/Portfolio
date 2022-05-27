@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MainApp.Controllers;
+namespace MainApp.Areas.Admin.Controllers;
 
-
-[Authorize]
+[Authorize(Roles = "Admin")]
+[Area("Admin")]
+[Route("[area]/[Controller]")]
 public class ApiBaseController : Controller
 {
     protected long CurrentUserId => User.GetId();

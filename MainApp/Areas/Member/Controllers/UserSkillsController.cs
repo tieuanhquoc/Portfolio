@@ -25,7 +25,7 @@ public class UserSkillsController : ApiBaseController
         var userSkills = await _databaseContext.UserSkills
             .Where(x => x.UserId == userId)
             .Include(x => x.User).ToListAsync();
-        return View("~/Areas/Member/Views/UserSkills/Index.cshtml", userSkills);
+        return View(userSkills);
     }
 
     public async Task<IActionResult> Details()
@@ -34,12 +34,12 @@ public class UserSkillsController : ApiBaseController
         var userSkills = await _databaseContext.UserSkills
             .Where(x => x.UserId == userId)
             .Include(x => x.User).ToListAsync();
-        return View("~/Areas/Member/Views/UserSkills/Details.cshtml", userSkills);
+        return View(userSkills);
     }
 
     public IActionResult Create()
     {
-        return View("~/Areas/Member/Views/UserSkills/Create.cshtml");
+        return View();
     }
 
     [HttpPost]
@@ -67,7 +67,7 @@ public class UserSkillsController : ApiBaseController
             return RedirectToAction("Index", "UserSkills", new {area = "Member"});
         }
 
-        return View("~/Areas/Member/Views/UserSkills/Create.cshtml", userSkillModel);
+        return View(userSkillModel);
     }
 
     public async Task<IActionResult> Edit(int? id)
@@ -83,7 +83,7 @@ public class UserSkillsController : ApiBaseController
             return NotFound();
         }
 
-        return View("~/Areas/Member/Views/UserSkills/Edit.cshtml", new UserSkillModel
+        return View(new UserSkillModel
         {
             Id = userSkill.Id,
             Information = userSkill.Information,
@@ -126,7 +126,7 @@ public class UserSkillsController : ApiBaseController
             return RedirectToAction(nameof(Index));
         }
 
-        return View("~/Areas/Member/Views/UserSkills/Edit.cshtml", new UserSkillModel
+        return View(new UserSkillModel
         {
             Id = userSkill.Id,
             Information = userSkill.Information,
@@ -151,7 +151,7 @@ public class UserSkillsController : ApiBaseController
             return NotFound();
         _databaseContext.UserSkills.Remove(userSkill);
         await _databaseContext.SaveChangesAsync();
-        return View("~/Areas/Member/Views/UserSkills/Index.cshtml");
+        return RedirectToAction("Index");
     }
 
     [HttpPost]
@@ -162,7 +162,7 @@ public class UserSkillsController : ApiBaseController
             .ToListAsync();
         var userIds = users.Select(x => x.Id).ToList();
         var userSkills = await _databaseContext.UserSkills.Where(x => userIds.Contains(x.UserId)).ToListAsync();
-        return View("~/Areas/Member/Views/UserSkills/IndexSearch.cshtml", userSkills);
+        return View(userSkills);
     }
 
     private async Task<string> UploadedFile(List<IFormFile> files)

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MainApp.Areas.Member.Controllers
 {
-    public class CommentsController : Controller
+    public class CommentsController : ApiBaseController
     {
         private readonly DatabaseContext _databaseContext;
 
@@ -32,19 +32,19 @@ namespace MainApp.Areas.Member.Controllers
                 return NotFound();
             }
 
-            return View("~/Areas/Member/Views/Comments/Details.cshtml", comment);
+            return View(comment);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> Create(int id)
+        [HttpPost("{postId:int}")]
+        public async Task<ActionResult> Create(int postId)
         {
-            var post = await _databaseContext.Posts.FirstOrDefaultAsync(x => x.Id == id);
+            var post = await _databaseContext.Posts.FirstOrDefaultAsync(x => x.Id == postId);
             if (post == null)
                 return new NotFoundResult();
             string content = HttpContext.Request.Form["content"];
             var comment = new Comment
             {
-                PostId = id,
+                PostId = postId,
                 Content = content,
                 Status = CommentStatus.Enabled,
                 UserId = User.GetId(),

@@ -1,7 +1,6 @@
-﻿@model MainApp.Models.NewModel
+﻿@model MainApp.Models.NewsModel
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <section class="contact-section active">
@@ -15,41 +14,36 @@
                     <input rows="3" asp-for="Source" class="form-control"/>
                     <span asp-validation-for="Source" class="text-danger"></span>
                 </div>
-                @* @if (!string.IsNullOrEmpty(Model?.Content)) *@
-                @* { *@
-                <div class="form-group">
-                    <label asp-for="Title" class="control-label"></label>
-                    <input asp-for="Title" class="form-control"/>
-                    <span asp-validation-for="Title" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Images" class="control-label"></label>
-                    <div class="custom-file">
-                        <input asp-for="Images" class="custom-file-input" id="customFile" type="file" multiple>
-                        <label class="custom-file-label" for="customFile">Choose file</label>
-                    </div>
-                    <span asp-validation-for="Images" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Content" class="control-label"></label>
-                    <textarea rows="3" asp-for="Content" class="form-control"></textarea>
-                    <span asp-validation-for="Content" class="text-danger"></span>
-                </div>
-                @* } *@
-
-                <div class="form-group">
-                    @* @if (string.IsNullOrEmpty(Model?.Content)) *@
-                    @* { *@
-                    @*     <a type="submit" href="/News/Crawl?source=" class="btn btn-primary">Crawl</a> *@
-                    @* } *@
-                    @* else *@
-                    @* { *@
-                    @* <a type="submit" asp-controller="News" asp-action="Push" class="btn btn-primary">Create</a> *@
-                    @* } *@
+                @if (!string.IsNullOrEmpty(Model?.Content))
+                {
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary"/>
+                        <label asp-for="Title" class="control-label"></label>
+                        <input asp-for="Title" class="form-control"/>
+                        <span asp-validation-for="Title" class="text-danger"></span>
                     </div>
+                    <div class="form-group">
+                        <div class="custom-file">
+                            <label asp-for="Images" class="control-label"></label>
+                            <input asp-for="Images" class="custom-file-input" id="customFile" type="file" multiple>
+                            <span asp-validation-for="Images" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Content" class="control-label"></label>
+                        <textarea rows="3" asp-for="Content" class="form-control"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                }
 
+                <div class="form-group">
+                    @if (string.IsNullOrEmpty(Model?.Content))
+                    {
+                        <input type="submit" value="Crawl" name="Crawl" class="btn btn-primary"/>
+                    }
+                    else
+                    {
+                        <input type="submit" value="Create" name="Create" class="btn btn-primary"/>
+                    }
                 </div>
             </form>
         </div>

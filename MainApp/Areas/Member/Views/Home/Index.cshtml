@@ -1,0 +1,9 @@
+﻿@using BuildingBlocks.Extensions
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section class="home-section active">
+    <h1 class="hero-heading">Hello, i am <br>@User.GetName()</h1>
+    <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : User.GetAvatar())" class="home-img" alt="">
+</section>

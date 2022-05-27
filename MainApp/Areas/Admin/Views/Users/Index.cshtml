@@ -1,0 +1,93 @@
+﻿@using BuildingBlocks.Data.Entities
+@model IEnumerable<BuildingBlocks.Data.Entities.User>
+@{
+    ViewData["Title"] = "Users";
+}
+<h1>User</h1>
+<table class="table" id="example">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Avatar)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AboutMe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="~/images/@(string.IsNullOrEmpty(item.Avatar) ? "default-avatar.png" : item.Avatar)" width="50" height="50" alt="@item.Username">
+            </td>
+            <td>
+                <a>
+                    @Html.DisplayFor(modelItem => item.Username)
+                </a>
+            </td>
+            <td>
+                <a>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </a>
+            </td>
+            <td>
+                <a>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </a>
+            </td>
+            <td>
+                <a>
+                    @Html.DisplayFor(modelItem => item.AboutMe)
+                </a>
+            </td>
+            <td>
+                <a>
+                    @Html.DisplayFor(modelItem => item.Address)
+                </a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @if (item.Status == UserStatus.Disabled)
+                {
+                    <a asp-action="UpdateStatus" asp-route-userId="@item.Id">@UserStatus.Enabled.ToString()</a>
+                }
+                else
+                {
+                    <a asp-action="UpdateStatus" asp-route-userId="@item.Id">@UserStatus.Disabled.ToString()</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<style>
+    tbody > tr > td > a{
+        height: 100%;
+        width: 100%;
+        align-items: center;
+        display: inline-block;
+        vertical-align: middle;
+        line-height: 1.5;
+    }
+</style>

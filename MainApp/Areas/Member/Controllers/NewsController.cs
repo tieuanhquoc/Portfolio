@@ -1,10 +1,11 @@
-﻿using BuildingBlocks.Data;
+﻿using System.Text;
+using BuildingBlocks.Data;
 using BuildingBlocks.Data.Entities;
 using BuildingBlocks.Helpers;
+using HtmlAgilityPack;
 using MainApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using NUglify;
 
 namespace MainApp.Areas.Member.Controllers;
 
@@ -25,54 +26,69 @@ public class NewsController : ApiBaseController
     public async Task<IActionResult> Index()
     {
         var news = await _databaseContext.News.ToListAsync();
-        return View("~/Areas/Member/Views/News/Index.cshtml", news);
+        return View(news);
     }
 
     [HttpGet]
     public IActionResult Create()
     {
-        return View("~/Areas/Member/Views/News/Create.cshtml");
+        return View();
     }
 
-    [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(NewModel newModel)
+    public async Task<IActionResult> Create(NewsModel newsModel)
     {
-        if (!Uri.IsWellFormedUriString(newModel.Source, UriKind.Absolute))
-            return NotFound();
-
-        var client = new HttpClient();
-        var html = await client.GetStringAsync(newModel.Source);
-
-        var result = Uglify.HtmlToText(html);
-
-        var images = await UploadedFile(newModel.Images);
-        var newEntity = new New
+        if (!string.IsNullOrEmpty(Request.Form["Crawl"].ToString()))
         {
-            Title = newModel.Title,
-            Content = result.Code,
-            Images = images,
-            Source = newModel.Source
-        };
-        await _databaseContext.News.AddAsync(newEntity);
-        await _databaseContext.SaveChangesAsync();
+            if (!Uri.IsWellFormedUriString(newsModel.Source, UriKind.Absolute))
+                return View();
 
-        return View("~/Areas/Member/Views/News/Create.cshtml", newModel);
+            var fullPath = new Uri("http://newspaper-demo.herokuapp.com/articles/show?url_to_clean=" + newsModel.Source);
+            var htmlWeb = new HtmlWeb
+            {
+                AutoDetectEncoding = false,
+                OverrideEncoding = Encoding.UTF8 //Set UTF8 để hiển thị tiếng Việt
+            };
+
+            var document = await htmlWeb.LoadFromWebAsync(fullPath.ToString());
+            var title = document.DocumentNode.SelectSingleNode("/html/body/section/div/div/table/tbody/tr[1]/td[2]");
+            var content = document.DocumentNode.SelectSingleNode("/html/body/section/div/div/table/tbody/tr[3]/td[2]");
+
+
+            return View(new NewsModel
+            {
+                Content = content.InnerText.RemoveHtml(),
+                Title = title.InnerText.RemoveHtml(),
+                Source = newsModel.Source
+            });
+        }
+        else
+        {
+            var images = await UploadedFile(newsModel.Images);
+            var newEntity = new News
+            {
+                Title = newsModel.Title,
+                Content = newsModel.Content,
+                Images = images,
+                Source = newsModel.Source
+            };
+            await _databaseContext.News.AddAsync(newEntity);
+            await _databaseContext.SaveChangesAsync();
+            return RedirectToAction("Index");
+        }
     }
 
-    [HttpPost]
-    public async Task<IActionResult> Crawl(NewModel newModel)
+    public async Task<IActionResult> Delete(int id)
     {
-        if (!Uri.IsWellFormedUriString(newModel.Source, UriKind.Absolute))
-            return NotFound();
-
-        var client = new HttpClient();
-        var html = await client.GetStringAsync(newModel.Source);
-        html.RemoveHtml();
-        return View("~/Areas/Member/Views/News/Create.cshtml", new NewModel
+        var news = await _databaseContext.News.FirstOrDefaultAsync(m => m.Id == id);
+        if (news == null)
         {
-            Content = html
-        });
+            return RedirectToAction(nameof(Index));
+        }
+
+        _databaseContext.News.Remove(news);
+        await _databaseContext.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
     private async Task<string> UploadedFile(List<IFormFile> files)

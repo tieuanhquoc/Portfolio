@@ -27,12 +27,12 @@ public class PostsController : ApiBaseController
         ViewData["User"] = userDetails;
         ViewData["alluser"] = await _databaseContext.Users.Where(x => x.Role == UserRole.Member).ToListAsync();
         ViewData["Comment"] = await _databaseContext.Comments.Include(c => c.Post).Include(c => c.User).ToListAsync();
-        return View("~/Areas/Member/Views/Posts/Index.cshtml", posts);
+        return View(posts);
     }
 
     public IActionResult Create()
     {
-        return View("~/Areas/Member/Views/Posts/Create.cshtml");
+        return View();
     }
 
     [HttpPost]
@@ -53,14 +53,51 @@ public class PostsController : ApiBaseController
                 UrlImages = images,
                 UserId = userId
             };
-            
+
 
             await _databaseContext.Posts.AddAsync(post);
             await _databaseContext.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        return View("~/Areas/Member/Views/Posts/Create.cshtml", postModel);
+        return View(postModel);
+    }
+
+    public async Task<IActionResult> Like(int? id)
+    {
+        if (id == null)
+        {
+            return NotFound();
+        }
+
+        var post = await _databaseContext.Posts.FindAsync(id);
+        if (post == null)
+        {
+            return NotFound();
+        }
+
+        post.Like += 1;
+        _databaseContext.Posts.Update(post);
+        await _databaseContext.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
+    }
+
+    public async Task<IActionResult> Delete(int id)
+    {
+        var comments = _databaseContext.Comments.Where(c => c.PostId == id);
+        _databaseContext.RemoveRange(comments);
+        
+        var post = await _databaseContext.Posts
+            .Include(x => x.Comments)
+            .FirstOrDefaultAsync(m => m.Id == id);
+        if (post == null)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+
+        _databaseContext.Posts.Remove(post);
+        await _databaseContext.SaveChangesAsync();
+        return RedirectToAction(nameof(Index));
     }
 
 

@@ -1,5 +1,4 @@
 using BuildingBlocks.Data;
-using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
@@ -58,7 +57,7 @@ app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         "areas",
-        "{area:exists}/{controller=Home}/{action=Index}/"
+        "{area:exists}/{controller=Users}/{action=Index}/{id?}"
     );
     endpoints.MapControllerRoute(
         "default",

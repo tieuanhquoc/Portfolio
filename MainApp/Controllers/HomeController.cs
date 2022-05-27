@@ -3,19 +3,20 @@ using MainApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MainApp.Areas.Member.Controllers;
+namespace MainApp.Controllers;
+
 
 public class HomeController : ApiBaseController
 {
     public IActionResult Index()
     {
-        return View();
+        return RedirectToAction("Index", "Home", new { area = "Member" });
     }
 
     [AllowAnonymous]
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        return View(new ErrorViewModel {RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier});
+        return RedirectToAction("Index", "Home", new { area = "Member" });
     }
 }

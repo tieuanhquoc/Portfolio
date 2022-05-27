@@ -4,12 +4,14 @@ using BuildingBlocks.Data.Entities;
 using MainApp.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainApp.Controllers;
 
+[AllowAnonymous]
 public class AuthController : Controller
 {
     private readonly DatabaseContext _databaseContext;
@@ -85,10 +87,10 @@ public class AuthController : Controller
 
             await HttpContext.SignInAsync(principal);
             if (user.Role == UserRole.Member)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Home",new {area = "Member"});
             else if (user.Role == UserRole.Admin)
             {
-                return RedirectToAction("Index", "Home", new {area = "Admin"});
+                return RedirectToAction("Index", "Users", new {area = "Admin"});
             }
             else
             {

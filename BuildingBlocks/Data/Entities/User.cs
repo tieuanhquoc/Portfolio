@@ -26,8 +26,8 @@ namespace BuildingBlocks.Data.Entities
 
     public enum UserStatus
     {
-        [Display(Name = "Đang hoạt động")] Enabled = 1,
-        [Display(Name = "Ngưng hoạt động")] Disabled = 2
+        [Display(Name = "Enabled")] Enabled = 1,
+        [Display(Name = "Disabled")] Disabled = 2
     }
 
     public enum UserRole

@@ -13,7 +13,7 @@ public class DatabaseContext : DbContext
     public DbSet<Comment> Comments { set; get; }
     public DbSet<Message> Messages { set; get; }
     public DbSet<Room> Rooms { set; get; }
-    public DbSet<New> News { set; get; }
+    public DbSet<News> News { set; get; }
     public DbSet<Post> Posts { set; get; }
     public DbSet<User> Users { set; get; }
     public DbSet<UserSkill> UserSkills { set; get; }
@@ -26,6 +26,7 @@ public class DatabaseContext : DbContext
         modelBuilder.ApplyConfiguration(new UserConfig());
         modelBuilder.ApplyConfiguration(new UserSkillConfig());
         modelBuilder.ApplyConfiguration(new RoomConfig());
-        modelBuilder.ApplyConfiguration(new NewConfig());
+        modelBuilder.ApplyConfiguration(new NewsConfig());
+        modelBuilder.Seed();
     }
 }

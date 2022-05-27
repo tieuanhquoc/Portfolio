@@ -29,7 +29,7 @@ public class UsersController : ApiBaseController
             return NotFound();
         }
 
-        return View("~/Areas/Member/Views/Users/Edit.cshtml", new UserModels
+        return View(new UserModels
         {
             Id = user.Id,
             Username = user.Username,
@@ -90,10 +90,10 @@ public class UsersController : ApiBaseController
             _databaseContext.Users.Update(user);
             await _databaseContext.SaveChangesAsync();
 
-            return View("~/Areas/Member/Views/Users/Edit.cshtml", userModels);
+            return View(userModels);
         }
 
-        return View("~/Areas/Member/Views/Users/Edit.cshtml", userModels);
+        return View(userModels);
     }
 
 

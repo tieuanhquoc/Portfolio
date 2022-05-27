@@ -1,5 +1,7 @@
-﻿@using BuildingBlocks.Data.Entities
-@model IEnumerable<BuildingBlocks.Data.Entities.New>
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Web
+@using BuildingBlocks.Data.Entities
+@model IEnumerable<BuildingBlocks.Data.Entities.News>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -7,20 +9,24 @@
     <div class="wrapper">
         <form class="left-col">
             <button asp-controller="News" asp-action="Create" style="background: #ff4f4f; padding: 10px 20px; color: white; border-radius: 5px">New News</button>
-            @foreach (var item in Model ?? new List<New>())
+            @foreach (var item in Model ?? new List<News>())
             {
                 <div class="post">
-                    @{ var images = item.Images.Split(','); }
-                    <img src="~/images/@images[0]" class="post-image" alt="@item.Title">
-                    <div class="post-content">
-                        <div class="reaction-wrapper">
-                            <a href="/Posts/Like/@item.Id">
-                                <img src="~/img/heart_outline.png" class="icon" alt="">
-                            </a>
+                    <div class="info" style="padding-top: 20px">
+                        <div class="user">
+                            <h2 style="color: white; padding: 5px 5px 5px 0">@item.Title</h2>
                         </div>
-                        <h2 style="color: white; padding: 5px 5px 5px 0">@item.Title</h2>
+                        <button asp-controller="News" asp-action="Delete" asp-route-id="@item.Id" style="background: #ff4f4f; padding: 5px 10px; color: white; border-radius: 5px">Delete</button>
+                    </div>
+                    <div class="post-content">
+
+                        @{ var images = item.Images.Split(','); }
+                        @if (images.Any(x => !string.IsNullOrEmpty(x)))
+                        {
+                            <img src="~/images/@images[0]" class="post-image" alt="@item.Title">
+                        }
                         <p class="description">
-                            @item.Content
+                            @HttpUtility.HtmlDecode(item.Content);
                         </p>
                     </div>
                 </div>

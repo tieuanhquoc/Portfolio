@@ -175,6 +175,16 @@ namespace MainApp.Migrations
                         principalColumn: "Id");
                 });
 
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "AboutMe", "Address", "Avatar", "CreatedAt", "Email", "Password", "Phone", "Role", "Status", "Username" },
+                values: new object[] { 1, "No thing", "Địa chỉ", "", new DateTime(2022, 5, 28, 0, 50, 17, 620, DateTimeKind.Local).AddTicks(5659), "admin@yobmail.com", "AQAAAAEAACcQAAAAEGaJKPczfKh7ZrNzJF4sGzKycxvj7cZa9fATFhokpyZEo659I3HGmtFpNPYTKc/FMA==", "0982456789", 1, 1, "admin" });
+
+            migrationBuilder.InsertData(
+                table: "User",
+                columns: new[] { "Id", "AboutMe", "Address", "Avatar", "CreatedAt", "Email", "Password", "Phone", "Role", "Status", "Username" },
+                values: new object[] { 2, "No thing", "Địa chỉ", "", new DateTime(2022, 5, 28, 0, 50, 17, 628, DateTimeKind.Local).AddTicks(6134), "user@yobmail.com", "AQAAAAEAACcQAAAAEFyAdehnt55DW4kGj5/TfVwGWH3vLUWSxXMZvZCpmqChAE1nE8UeSvuBklgbKdWeEw==", "0982456799", 2, 1, "user" });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Comment_PostId",
                 table: "Comment",

@@ -5,13 +5,11 @@
     var comments = ViewData["Comment"] as IEnumerable<Comment>;
     var user = ViewData["User"] as User;
     var users = ViewData["alluser"] as IEnumerable<User>;
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <section class="forum-section active">
     <div class="wrapper">
-
-        <form class="left-col">
-            <button asp-controller="Posts" asp-action="Create" style="background: #ff4f4f; padding: 10px 20px; color: white; border-radius: 5px">New Post</button>
+        <div class="left-col" style="padding-top: 10px">
+            <a asp-controller="Posts" asp-action="Create" style="text-decoration: none; background: #ff4f4f; padding: 10px 20px; color: white; border-radius: 5px">New Post</a>
             @foreach (var item in Model ?? new List<Post>())
             {
                 <div class="post">
@@ -24,41 +22,42 @@
                         </div>
                         @if (User.GetId() == item.UserId)
                         {
-                            <button style="background: #ff4f4f; padding: 5px 10px; color: white; border-radius: 5px">Delete</button>
+                            <a asp-controller="Posts" asp-action="Delete" asp-route-id="@item.Id" style="text-decoration: none ;background: #ff4f4f; padding: 5px 10px; color: white; border-radius: 5px">Delete</a>
                         }
                     </div>
                     @{ var images = item.UrlImages.Split(','); }
-                    <img src="~/images/@images[0]" class="post-image" alt="@item.Title">
+                    @if (images.Any(x => !string.IsNullOrEmpty(x)))
+                    {
+                        <img src="~/images/@images[0]" class="post-image" alt="@item.Title">
+                    }
                     <div class="post-content">
-                        <div class="reaction-wrapper">
-                            <a href="/Posts/Like/@item.Id">
-                                <img src="~/img/heart_outline.png" class="icon" alt="">
-                            </a>
-                        </div>
-                        <p class="likes">@item.Like likes</p>
                         <h2 style="color: white; padding: 5px 5px 5px 0">@item.Title</h2>
                         <p class="description">
                             @item.Note
                         </p>
+                        <div class="reaction-wrapper">
+                            <a href="/Posts/Like/@item.Id">
+                                <img src="~/img/heart_outline.png" class="icon" alt="">
+                            </a>
+                            <p class="likes">@item.Like likes</p>
+                        </div>
                     </div>
                     <div>
                         @foreach (var comment in comments ?? new List<Comment>())
                         {
                             if (comment.PostId == item.Id)
                             {
-                                <li class="media">
+                                <li class="media" style="list-style-type: none;">
                                     @if (comment.UserId == user?.Id)
                                     {
-                                        <p class="fs-8 pt-2" style="color:white">
+                                        <p class="fs-8 pt-2" style="color:white; width: 100%">
                                             Me: @comment.Content
-                                            <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">
-                                                <i class='bx bx-dots-horizontal-rounded'>Delete</i>
-                                            </a>
+                                            <a style="color: #ff4f4f; text-decoration: none" asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.Id">Delete</a>
                                         </p>
                                     }
                                     else
                                     {
-                                        <p class="fs-8 pt-2" style="color:white">
+                                        <p class="fs-8 pt-2" style="color:white; width: 100%">
                                             @comment.User.Username: @comment.Content
                                         </p>
                                     }
@@ -66,20 +65,19 @@
                             }
                         }
                     </div>
-                    <br/>
-                    <hr style="color:azure"/>
+                    <div style="padding: 10px">
+                        <form asp-controller="Comments" asp-action="Create" asp-area="Member" asp-route-postId="@item.Id">
+                            <div class="comment-wrapper">
+                                <img src="~/img/smile.png" class="icon" alt="">
+                                <input name="content" type="text" class="comment-box" placeholder="Add a comment">
+                                <button type="submit" class="comment-btn">post</button>
+                            </div>
+                        </form>
+                    </div>
 
-                    <form asp-controller="Comments" asp-action="Create" asp-route-id="@item.Id" as method="post">
-                        <div class="comment-wrapper">
-                            <img src="img/smile.png" class="icon" alt="">
-                            <input name="content" type="text" class="comment-box" placeholder="Add a comment">
-                            <button class="comment-btn">post</button>
-                        </div>
-                    </form>
                 </div>
             }
-
-        </form>
+        </div>
         <div class="right-col">
 
             <p class="suggestion-text">Suggestions for you</p>

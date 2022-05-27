@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MainApp.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20220526163539_init")]
+    [Migration("20220527175017_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,7 +92,7 @@ namespace MainApp.Migrations
                     b.ToTable("Message", (string)null);
                 });
 
-            modelBuilder.Entity("BuildingBlocks.Data.Entities.New", b =>
+            modelBuilder.Entity("BuildingBlocks.Data.Entities.News", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -229,6 +229,36 @@ namespace MainApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AboutMe = "No thing",
+                            Address = "Địa chỉ",
+                            Avatar = "",
+                            CreatedAt = new DateTime(2022, 5, 28, 0, 50, 17, 620, DateTimeKind.Local).AddTicks(5659),
+                            Email = "admin@yobmail.com",
+                            Password = "AQAAAAEAACcQAAAAEGaJKPczfKh7ZrNzJF4sGzKycxvj7cZa9fATFhokpyZEo659I3HGmtFpNPYTKc/FMA==",
+                            Phone = "0982456789",
+                            Role = 1,
+                            Status = 1,
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AboutMe = "No thing",
+                            Address = "Địa chỉ",
+                            Avatar = "",
+                            CreatedAt = new DateTime(2022, 5, 28, 0, 50, 17, 628, DateTimeKind.Local).AddTicks(6134),
+                            Email = "user@yobmail.com",
+                            Password = "AQAAAAEAACcQAAAAEFyAdehnt55DW4kGj5/TfVwGWH3vLUWSxXMZvZCpmqChAE1nE8UeSvuBklgbKdWeEw==",
+                            Phone = "0982456799",
+                            Role = 2,
+                            Status = 1,
+                            Username = "user"
+                        });
                 });
 
             modelBuilder.Entity("BuildingBlocks.Data.Entities.UserSkill", b =>

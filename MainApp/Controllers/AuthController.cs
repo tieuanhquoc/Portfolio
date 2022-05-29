@@ -147,11 +147,11 @@ public class AuthController : Controller
             userModels.CreatedAt = DateTime.Now;
             if (!string.IsNullOrEmpty(userModels.Email) && userModels.Email.Contains("IT"))
             {
-                userModels.Status = UserStatus.Waiting;
+                userModels.Status = UserStatus.Enabled;
             }
             else
             {
-                userModels.Status = UserStatus.Disabled;
+                userModels.Status = UserStatus.Waiting;
             }
 
             _databaseContext.Add(userModels);

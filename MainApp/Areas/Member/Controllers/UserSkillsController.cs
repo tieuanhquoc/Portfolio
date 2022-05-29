@@ -169,11 +169,17 @@ public class UserSkillsController : ApiBaseController
     public async Task<IActionResult> IndexSearch()
     {
         string username = HttpContext.Request.Form["username"];
-        var users = await _databaseContext.Users.Where(x => x.Username.ToLower().Equals(username.ToLower()))
-            .ToListAsync();
-        var userIds = users.Select(x => x.Id).ToList();
-        var userSkills = await _databaseContext.UserSkills.Where(x => userIds.Contains(x.UserId)).ToListAsync();
-        return View(userSkills);
+        var user = await _databaseContext.Users.FirstOrDefaultAsync(x => x.Username.ToLower().Equals(username.ToLower()));
+        if (user == null)
+        {
+            return View(new FindUserSkillModel()); 
+        }
+        var userSkills = await _databaseContext.UserSkills.Where(x => x.UserId == user.Id).ToListAsync();
+        return View(new FindUserSkillModel
+        {
+            UserSkills = userSkills,
+            User = user
+        });
     }
 
     private async Task<string> UploadedFile(List<IFormFile> files)

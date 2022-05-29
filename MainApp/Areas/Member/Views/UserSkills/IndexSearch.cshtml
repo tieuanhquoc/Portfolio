@@ -8,7 +8,6 @@
     <div class="about">
         <div class="about-img-container">
             <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : User.GetAvatar())" class="about-img" alt="">
-            <button class="download-cv-btn">CV of @User.GetName()</button>
         </div>
 
         <p class="about-info">

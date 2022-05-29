@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace BuildingBlocks.Data.Entities
 {
@@ -12,7 +13,10 @@ namespace BuildingBlocks.Data.Entities
         //
         public int RoomId { get; set; }
         public int CreatorId { get; set; }
+        public string CreatorName => Creator?.Username;
+        [JsonIgnore]
         public virtual User Creator { get; set; }
+        [JsonIgnore]
         public virtual Room Room { get; set; }
     }
 

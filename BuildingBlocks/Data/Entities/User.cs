@@ -6,7 +6,9 @@ namespace BuildingBlocks.Data.Entities
     public class User
     {
         public int Id { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập tên đăng nhập")]
         public string Username { get; set; }
+        [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         public string Password { get; set; }
         public string Avatar { get; set; }
         public string Email { get; set; }

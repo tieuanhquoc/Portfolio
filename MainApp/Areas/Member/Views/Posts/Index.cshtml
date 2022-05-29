@@ -36,10 +36,10 @@
                             @item.Note
                         </p>
                         <div class="reaction-wrapper">
-                            <a href="/Posts/Like/@item.Id">
+                            <a asp-action="Like" asp-controller="Posts" asp-area="Member" asp-route-id="@item.Id">
                                 <img src="~/img/heart_outline.png" class="icon" alt="">
                             </a>
-                            <p class="likes">@item.Like likes</p>
+                            <a class="likes">@item.Like likes</a>
                         </div>
                     </div>
                     <div>

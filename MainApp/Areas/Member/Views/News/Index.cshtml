@@ -8,7 +8,6 @@
 <section class="forum-section active">
     <div class="wrapper">
         <form class="left-col">
-            <button asp-controller="News" asp-action="Create" style="background: #ff4f4f; padding: 10px 20px; color: white; border-radius: 5px">New News</button>
             @foreach (var item in Model ?? new List<News>())
             {
                 <div class="post">
@@ -16,7 +15,6 @@
                         <div class="user">
                             <h2 style="color: white; padding: 5px 5px 5px 0">@item.Title</h2>
                         </div>
-                        <button asp-controller="News" asp-action="Delete" asp-route-id="@item.Id" style="background: #ff4f4f; padding: 5px 10px; color: white; border-radius: 5px">Delete</button>
                     </div>
                     <div class="post-content">
 

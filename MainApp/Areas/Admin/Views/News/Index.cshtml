@@ -1,0 +1,74 @@
+﻿@model IEnumerable<BuildingBlocks.Data.Entities.News>
+@{
+    ViewData["Title"] = "Users";
+}
+<h1>User</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Images)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Source)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Content)
+        </th>
+        <th style="min-width: 100px">
+            <a asp-action="Create" asp-controller="News" asp-area="Admin">Tạo mới</a>
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <a>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </a>
+            </td>
+            <td>
+                <img src="~/images/@(string.IsNullOrEmpty(item.Images) ? "default-avatar.png" : item.Images)" width="50" height="50" alt="@item.Images">
+            </td>
+            <td>
+                <a>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </a>
+            </td>
+            <td>
+                <a>
+                    @Html.DisplayFor(modelItem => item.Source)
+                </a>
+            </td>
+            <td>
+                <a>
+                    @(item.Content.Length > 200 ? $"{item.Content[..200]}..." : item.Content)
+                </a>
+            </td>
+            <td>
+
+                <a asp-action="Delete" asp-controller="News" asp-area="Admin" asp-route-id="@item.Id">Xóa</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<style>
+   tbody > tr > td > a{
+       height: 100%;
+       width: 100%;
+       align-items: center;
+       display: inline-block;
+       vertical-align: middle;
+       line-height: 1.5;
+   }
+</style>

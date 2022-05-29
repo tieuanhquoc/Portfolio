@@ -3,6 +3,7 @@ using BuildingBlocks.Data.Entities;
 using BuildingBlocks.Extensions;
 using MainApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 namespace MainApp.Areas.Member.Controllers;
@@ -25,6 +26,16 @@ public class UserSkillsController : ApiBaseController
         var userSkills = await _databaseContext.UserSkills
             .Where(x => x.UserId == userId)
             .Include(x => x.User).ToListAsync();
+        return View(userSkills);
+    }
+
+    public async Task<IActionResult> CapScreen()
+    {
+        var userId = User.GetId();
+        var userSkills = await _databaseContext.UserSkills
+            .Where(x => x.UserId == userId)
+            .Include(x => x.User).ToListAsync();
+
         return View(userSkills);
     }
 

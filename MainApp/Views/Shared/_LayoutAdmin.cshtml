@@ -1,5 +1,5 @@
-﻿@using BuildingBlocks.Extensions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using BuildingBlocks.Extensions
 <!DOCTYPE html>
 <html lang="en">
 
@@ -78,12 +78,16 @@
             </div>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
-               aria-expanded="true" aria-controls="collapseUtilities">
-                <i class="fas fa-fw fa-wrench"></i>
-                <span>Góp Ý</span>
+            <a class="nav-link" asp-controller="News" asp-action="Index" asp-area="Admin">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Quản lý tin tức</span>
             </a>
-
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="ChatBox" asp-action="Index" asp-area="Admin">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Chatbox</span>
+            </a>
         </li>
         <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">

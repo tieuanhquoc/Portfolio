@@ -1,0 +1,46 @@
+﻿@model MainApp.Models.NewsModel
+@{
+    ViewData["Title"] = "Create";
+}
+<h1 class="project-heading text-center">News</h1>
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <form class="contact-form" enctype="multipart/form-data" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Source" class="control-label"></label>
+                <input rows="3" asp-for="Source" class="form-control"/>
+                <span asp-validation-for="Source" class="text-danger"></span>
+            </div>
+            @if (!string.IsNullOrEmpty(Model?.Content))
+            {
+                <div class="form-group">
+                    <label asp-for="Title" class="control-label"></label>
+                    <input asp-for="Title" class="form-control"/>
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Images" class="control-label"></label>
+                    <input asp-for="Images" class="form-control" type="file">
+                    <span asp-validation-for="Images" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Content" class="control-label"></label>
+                    <textarea rows="20" asp-for="Content" class="form-control"></textarea>
+                    <span asp-validation-for="Content" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="form-group">
+                @if (string.IsNullOrEmpty(Model?.Content))
+                {
+                    <input type="submit" value="Crawl" name="Crawl" class="btn btn-primary"/>
+                }
+                else
+                {
+                    <input type="submit" value="Create" name="Create" class="btn btn-primary"/>
+                }
+            </div>
+        </form>
+    </div>
+</div>

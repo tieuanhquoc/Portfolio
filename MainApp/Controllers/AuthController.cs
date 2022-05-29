@@ -15,13 +15,25 @@ namespace MainApp.Controllers;
 public class AuthController : Controller
 {
     private readonly DatabaseContext _databaseContext;
+    private readonly IWebHostEnvironment _webHostEnvironment;
+
 
     [ActivatorUtilitiesConstructor]
-    public AuthController(DatabaseContext databaseContext)
+    public AuthController(DatabaseContext databaseContext, IWebHostEnvironment webHostEnvironment)
     {
         _databaseContext = databaseContext;
+        _webHostEnvironment = webHostEnvironment;
     }
 
+    [HttpGet]
+    public async Task<IActionResult> AccessDenied()
+    {
+        if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier) != null)
+            await HttpContext.SignOutAsync();
+        return RedirectToAction("Login");
+    }
+    
+    
     [HttpGet]
     public async Task<IActionResult> Login(ResponseMessage responseMessage = null)
     {
@@ -73,12 +85,12 @@ public class AuthController : Controller
                     {
                         new Claim("Id", user.Id.ToString()),
                         new Claim("Name", user.Username),
-                        new Claim("Email", user.Email),
-                        new Claim("Phone", user.Phone),
-                        new Claim("Avatar", user.Avatar),
+                        new Claim("Email", user.Email ?? string.Empty),
+                        new Claim("Phone", user.Phone ?? string.Empty),
+                        new Claim("Avatar", user.Avatar ?? string.Empty),
                         new Claim("Role", user.Role.ToString()),
-                        new Claim("About", user.AboutMe),
-                        new Claim("Address", user.Address),
+                        new Claim("About", user.AboutMe ?? string.Empty),
+                        new Claim("Address", user.Address ?? string.Empty),
                         new Claim(ClaimTypes.Role, user.Role.ToString()),
                     },
                     CookieAuthenticationDefaults.AuthenticationScheme
@@ -87,7 +99,7 @@ public class AuthController : Controller
 
             await HttpContext.SignInAsync(principal);
             if (user.Role == UserRole.Member)
-                return RedirectToAction("Index", "Home",new {area = "Member"});
+                return RedirectToAction("Index", "Home", new {area = "Member"});
             else if (user.Role == UserRole.Admin)
             {
                 return RedirectToAction("Index", "Users", new {area = "Admin"});
@@ -101,10 +113,96 @@ public class AuthController : Controller
         return View(loginModel);
     }
 
+
+    public IActionResult Register(ResponseMessage responseMessage = null)
+    {
+        if (responseMessage != null && responseMessage.Status != ResponseStatus.None)
+        {
+            ViewData["ResponseMessage"] = responseMessage.Message;
+            ViewData["ResponseStatus"] = responseMessage.Status.ToString();
+        }
+
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(UserModels userModels)
+    {
+        if (ModelState.IsValid)
+        {
+            if (await _databaseContext.Users.AnyAsync(x => x.Username.Trim() == userModels.Username.Trim()))
+                return RedirectToAction(
+                    "Register",
+                    "Auth",
+                    ResponseMessage.Error("Tên đăng nhập đã tồn tại")
+                );
+
+            var image = await UploadedFile(userModels.Images);
+            userModels.Avatar = image;
+            userModels.Username = userModels.Username.Trim();
+            var passwordHash = new PasswordHasher<User>();
+            userModels.Password = passwordHash.HashPassword(new User(), userModels.Password);
+            userModels.Role = UserRole.Member;
+            userModels.CreatedAt = DateTime.Now;
+            if (!string.IsNullOrEmpty(userModels.Email) && userModels.Email.Contains("IT"))
+            {
+                userModels.Status = UserStatus.Enabled;
+            }
+            else
+            {
+                userModels.Status = UserStatus.Disabled;
+            }
+
+            _databaseContext.Add(userModels);
+            await _databaseContext.SaveChangesAsync();
+            if (userModels.Status == UserStatus.Enabled)
+                return RedirectToAction(
+                    "Login",
+                    "Auth",
+                    ResponseMessage.Success("Đăng ký thành công")
+                );
+            else
+            {
+                return RedirectToAction(
+                    "Login",
+                    "Auth",
+                    ResponseMessage.Success("Tài khoản của bạn đang được đuyệt vui lòng chờ...")
+                );
+            }
+        }
+
+        return View(userModels);
+    }
+
     [HttpGet]
     public async Task<IActionResult> LogOut()
     {
         await HttpContext.SignOutAsync();
         return RedirectToAction("Login");
+    }
+
+
+    private async Task<string> UploadedFile(List<IFormFile> files)
+    {
+        var fileNames = new List<string>();
+        if (files == null || files.Count == 0)
+            return string.Join(",", fileNames);
+        foreach (var formFile in files.Take(1))
+        {
+            if (formFile.Length > 0)
+            {
+                // full path to file in temp location
+                var filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images");
+                var fileExtension = Path.GetExtension(formFile.FileName);
+                var filename = $"{Guid.NewGuid():N}{fileExtension}";
+                var fileNameWithPath = Path.Combine(filePath, filename);
+                await using var stream = new FileStream(fileNameWithPath, FileMode.Create);
+                await formFile.CopyToAsync(stream);
+                fileNames.Add(filename);
+            }
+        }
+
+        return string.Join(",", fileNames);
     }
 }

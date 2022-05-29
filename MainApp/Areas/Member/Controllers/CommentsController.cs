@@ -10,6 +10,7 @@ namespace MainApp.Areas.Member.Controllers
     {
         private readonly DatabaseContext _databaseContext;
 
+        [ActivatorUtilitiesConstructor]
         public CommentsController(DatabaseContext databaseContext)
         {
             _databaseContext = databaseContext;
@@ -56,7 +57,7 @@ namespace MainApp.Areas.Member.Controllers
             return RedirectToAction("Index", "Posts", new {area = "Member"});
         }
 
-     
+
         // // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -76,6 +77,7 @@ namespace MainApp.Areas.Member.Controllers
 
             return RedirectToAction("Index", "Posts", new {area = "Member"});
         }
+
         //
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]

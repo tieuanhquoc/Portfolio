@@ -1,0 +1,56 @@
+﻿@using BuildingBlocks.Data.Entities
+@using BuildingBlocks.Extensions
+@model IEnumerable<BuildingBlocks.Data.Entities.UserSkill>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = null;
+}
+<link rel="stylesheet" href="~/style.css">
+<section class="about-section active">
+    <div class="about">
+        <div class="about-img-container">
+            <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : User.GetAvatar())" class="about-img" alt="">
+        </div>
+
+        <p class="about-info">
+            @User.GetAbout()
+        </p>
+    </div>
+
+    <div class="skill-section">
+        <h1 class="heading">Skills</h1>
+        <div class="skill-container">
+            @foreach (var item in Model ?? new List<UserSkill>())
+            {
+                <div class="skill-card">
+                    @{ var images = item.Project.Split(','); }
+                    <img src="~/images/@images[0]" class="skill-img" alt="@item.Skill">
+                    <div class="skill-level">@item.PercentSkill</div>
+                    <h1 class="skill-name">@item.Skill</h1>
+                    <p class="skill-info">
+                        @item.Information
+                    </p>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="timeline">
+        <h1 class="heading">education and experience</h1>
+        @foreach (var item in Model ?? new List<UserSkill>())
+        {
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title">@item.Time</h1>
+                    <p class="card-detail">
+                        @item.TitleProject
+                    </p>
+                </div>
+            </div>
+        }
+
+
+    </div>
+
+
+</section>

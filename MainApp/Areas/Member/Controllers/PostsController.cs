@@ -63,13 +63,9 @@ public class PostsController : ApiBaseController
         return View(postModel);
     }
 
-    public async Task<IActionResult> Like(int? id)
+    [HttpGet("Like/{id:int}")]
+    public async Task<IActionResult> Like(int id)
     {
-        if (id == null)
-        {
-            return NotFound();
-        }
-
         var post = await _databaseContext.Posts.FindAsync(id);
         if (post == null)
         {

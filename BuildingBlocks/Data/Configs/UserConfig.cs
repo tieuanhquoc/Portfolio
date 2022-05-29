@@ -13,7 +13,6 @@ public class UserConfig : IEntityTypeConfiguration<User>
         builder.Property(x => x.Id).ValueGeneratedOnAdd().IsRequired();
         builder.Property(x => x.Username).IsRequired();
         builder.Property(x => x.Password).IsRequired();
-        builder.Property(x => x.Username).IsRequired();
         builder.Property(x => x.Avatar).IsRequired(false);
         builder.Property(x => x.Email).IsRequired(false);
         builder.Property(x => x.Phone).IsRequired(false);

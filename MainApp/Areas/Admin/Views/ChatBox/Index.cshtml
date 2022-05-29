@@ -1,0 +1,124 @@
+﻿@using BuildingBlocks.Extensions
+@using BuildingBlocks.Data.Entities
+@model MainApp.Models.ChatBoxModel
+@{
+    ViewData["Title"] = "ChatBox";
+}
+
+<link rel="stylesheet" href="~/css/chatBoxAdmin.css">
+
+<section class="home-section active">
+    <div class="row">
+        <div class="row-item main">
+            <div class="title">
+                <a>@(!string.IsNullOrEmpty(Model?.User?.Username) ? Model?.User?.Username : "Chọn người chat")</a>
+            </div>
+            @if (Model?.User != null)
+            {
+                <div class="messages">
+                    <ul id="main-messages" id="main-messages">
+                        @foreach (var message in Model?.Messages ?? new List<Message>())
+                        {
+                            if (message.CreatorId == User.GetId())
+                            {
+                                <li class="li-item">
+                                    <a class="li-item-name me">Me</a>
+                                    <a class="li-item-content">
+                                        @message.Content
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="li-item">
+                                    <a class="li-item-name">@message.Creator?.Username</a>
+                                    <a class="li-item-content">
+                                        @message.Content
+                                    </a>
+                                </li>
+                            }
+                        }
+
+
+
+                    </ul>
+                </div>
+                <div class="chat">
+                    <input class="chat-item input" id="txtMessage" placeholder="input text"/>
+                    <button id="send-message" class="chat-item button">Send</button>
+                </div>
+            }
+        </div>
+        <div class="row-item users">
+            <a class="title">Users</a>
+            <ul>
+                @foreach (var item in Model.Users)
+                {
+                    <li>
+                        <img class="li-item" src="~/images/@(string.IsNullOrEmpty(item.Avatar) ? "default-avatar.png" : item.Avatar)" alt="@item.Username">
+                        <a class="li-item">@item.Username</a>
+                        <a asp-action="Index" asp-controller="ChatBox" asp-area="Admin" asp-route-userId="@item.Id" class="li-item btn-chat">Chat</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+
+</section>
+
+@section Scripts{
+    <script src="~/signalr/dist/browser/signalr.js"></script>
+    <script>
+        const scrollToBottom = () => {
+           const element = document.getElementById("main-messages");
+           element.scrollTop = element.scrollHeight;
+        }
+        $(async ()=>{
+            scrollToBottom();
+            const connection = new signalR.HubConnectionBuilder().withUrl("/chat").build();
+            await connection.start().catch(err => console.error(err.toString()));
+            await connection.invoke('JoinRoom', {
+                CreatorId: @User.GetId(),
+                RoomId: 0,
+                MemberId: @(Model?.User?.Id ?? 0)
+            });
+            
+            
+            document.getElementById('send-message').addEventListener('click', async event => {
+                let content = document.getElementById('txtMessage').value;
+                await connection.invoke('SendMessage', content)
+                document.getElementById('txtMessage').value = "";
+            })
+            
+           await connection.on("ReceiveMessages", messages => {
+             console.log(messages)
+           });
+            
+            
+           await connection.on("ReceiveMessage", message => {
+             let ul = document.getElementById('main-messages');
+             let li = document.createElement('li');
+             li.className = "li-item";
+             
+             let name = document.createElement('a');
+             name.className = message.creatorId == @User.GetId() ? "li-item-name me" : "li-item-name";
+             name.innerText = message.creatorId == @User.GetId() ? "Me" : message.creatorName;
+             console.log(message.creatorId, @User.GetId())
+             li.append(name);
+             
+             let content = document.createElement('a');
+             content.className = "li-item-content";
+             content.innerText = message.content;
+             
+             li.append(content);
+             ul.append(li);
+             
+             scrollToBottom();
+           });
+
+           
+
+            
+        })
+    </script>
+}

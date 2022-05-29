@@ -10,11 +10,11 @@
     <div class="about">
         <div class="about-img-container">
             <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : User.GetAvatar())" class="about-img" alt="">
-            <button class="download-cv-btn">Download cv</button>
+            @* <a asp-action="RenderView" asp-controller="UserSkills" asp-area="Member" class="download-cv-btn">Download cv</a> *@
         </div>
 
         <p class="about-info">
-            @* @user.Aboutme *@
+            @User.GetAbout()
         </p>
     </div>
 

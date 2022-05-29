@@ -6,10 +6,13 @@ namespace BuildingBlocks.Data.Entities
     public class User
     {
         public int Id { get; set; }
+
         [Required(ErrorMessage = "Vui lòng nhập tên đăng nhập")]
         public string Username { get; set; }
+
         [Required(ErrorMessage = "Vui lòng nhập mật khẩu")]
         public string Password { get; set; }
+
         public string Avatar { get; set; }
         public string Email { get; set; }
         public string Phone { get; set; }
@@ -29,7 +32,8 @@ namespace BuildingBlocks.Data.Entities
     public enum UserStatus
     {
         [Display(Name = "Enabled")] Enabled = 1,
-        [Display(Name = "Disabled")] Disabled = 2
+        [Display(Name = "Disabled")] Disabled = 2,
+        [Display(Name = "Waiting for accept")] Waiting = 3
     }
 
     public enum UserRole

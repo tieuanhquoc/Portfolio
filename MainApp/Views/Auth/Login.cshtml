@@ -32,7 +32,7 @@
                 <br/>
                 <div class="form-group ps-3 pe-3">
                     <div class="col-md-12">
-                        <label asp-for="UserName">Tên đăng nhập</label>
+                        <label asp-for="UserName">Username</label>
                         @Html.EditorFor(model => model.UserName, new {htmlAttributes = new {@class = "form-control"}})
                         @Html.ValidationMessageFor(model => model.UserName, "", new {@class = "text-danger"})
                     </div>
@@ -41,7 +41,7 @@
                 <br/>
                 <div class="form-group ps-3 pe-3">
                     <div class="col-md-12">
-                        <label asp-for="Password">Mật khẩu</label>
+                        <label asp-for="Password">Password</label>
                         @Html.EditorFor(model => model.Password, new {htmlAttributes = new {@class = "form-control", Type = "Password"}})
                         @Html.ValidationMessageFor(model => model.Password, "", new {@class = "text-danger"})
                     </div>
@@ -55,7 +55,7 @@
                 }
                 <div class="form-group">
                     <div class="col-md-offset-1 col-md-12 p-2">
-                        <button type="submit" value="Login" class="btn btn-primary sign-up">Đăng nhập</button>
+                        <button type="submit" value="Login" class="btn btn-primary sign-up">Login</button>
                         <p class="pt-2">
                             <a asp-area="" asp-action="Register" asp-controller="Auth">Register</a>
                         </p>

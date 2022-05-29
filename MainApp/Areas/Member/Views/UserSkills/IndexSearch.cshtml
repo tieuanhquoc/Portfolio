@@ -7,7 +7,7 @@
 <section class="about-section active">
     <div class="about">
         <div class="about-img-container">
-            <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : string.IsNullOrEmpty(User.GetAvatar()))" class="about-img" alt="">
+            <img src="~/images/@(string.IsNullOrEmpty(User.GetAvatar()) ? "default-avatar.png" : User.GetAvatar())" class="about-img" alt="">
             <button class="download-cv-btn">CV of @User.GetName()</button>
         </div>
 
@@ -45,8 +45,6 @@
                 </div>
             </div>
         }
-
-
     </div>
 
 
@@ -63,9 +61,6 @@
                     <p class="project-info">
                         @item.TitleProject
                     </p>
-                    <div class="project-btn-grp">
-                        <button class="project-btn github">github</button>
-                    </div>
                 </div>
             </div>
         }

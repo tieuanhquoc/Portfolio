@@ -16,7 +16,7 @@ namespace BuildingBlocks.Data.Entities
 
     public enum CommentStatus
     {
-        [Display(Name = "Hoạt động")] Enabled = 1,
-        [Display(Name = "Khóa")] Block = 2
+        Enabled = 1,
+        Block = 2
     }
 }

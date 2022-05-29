@@ -22,7 +22,7 @@
             @Html.DisplayNameFor(model => model.Content)
         </th>
         <th style="min-width: 100px">
-            <a asp-action="Create" asp-controller="News" asp-area="Admin">Tạo mới</a>
+            <a asp-action="Create" asp-controller="News" asp-area="Admin">Create</a>
         </th>
     </tr>
     </thead>
@@ -55,7 +55,7 @@
             </td>
             <td>
 
-                <a asp-action="Delete" asp-controller="News" asp-area="Admin" asp-route-id="@item.Id">Xóa</a>
+                <a asp-action="Delete" asp-controller="News" asp-area="Admin" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
     }

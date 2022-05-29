@@ -21,7 +21,7 @@ namespace BuildingBlocks.Data.Entities
 
     public enum PostStatus
     {
-        [Display(Name = "Đang hoạt động")] Enabled = 1,
-        [Display(Name = "Ngưng hoạt động")] Disabled = 2
+        Enabled = 1,
+        Disabled = 2
     }
 }

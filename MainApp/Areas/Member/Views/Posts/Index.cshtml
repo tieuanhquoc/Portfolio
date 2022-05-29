@@ -28,7 +28,16 @@
                     @{ var images = item.UrlImages.Split(','); }
                     @if (images.Any(x => !string.IsNullOrEmpty(x)))
                     {
-                        <img src="~/images/@images[0]" class="post-image" alt="@item.Title">
+                        if (images[0].Contains("mp4"))
+                        {
+                            <video class="post-video" controls>
+                                <source src="~/images/@images[0]" type="video/mp4">
+                            </video>
+                        }
+                        else
+                        {
+                            <img src="~/images/@images[0]" class="post-image" alt="@item.Title">
+                        }
                     }
                     <div class="post-content">
                         <h2 style="color: white; padding: 5px 5px 5px 0">@item.Title</h2>

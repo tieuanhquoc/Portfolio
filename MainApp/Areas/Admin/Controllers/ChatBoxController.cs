@@ -32,21 +32,23 @@ public class ChatBoxController : ApiBaseController
         {
             var user = await _databaseContext.Users.FirstOrDefaultAsync(x => x.Id == userId);
             if (user != null)
-            {
                 chatBoxModel.User = user;
-                var currentUserId = User.GetId();
-                var room = await _databaseContext.Rooms.Where(x =>
-                        (x.CreatorId == currentUserId &&
-                         x.MemberId == userId.Value) ||
-                        (x.CreatorId == userId.Value &&
-                         x.MemberId == currentUserId)
-                    )
-                    .FirstOrDefaultAsync();
-                var messages = _databaseContext.Messages
+            var currentUserId = User.GetId();
+            var room = await _databaseContext.Rooms.Where(x =>
+                    (x.CreatorId == currentUserId &&
+                     x.MemberId == userId.Value) ||
+                    (x.CreatorId == userId.Value &&
+                     x.MemberId == currentUserId)
+                )
+                .FirstOrDefaultAsync();
+
+            if (room != null)
+            {
+                var messages = await _databaseContext.Messages
                     .Where(x => x.RoomId == room.Id)
                     .Include(x => x.Creator)
                     .ToListAsync();
-                chatBoxModel.Messages = await messages;
+                chatBoxModel.Messages = messages;
             }
         }
 

@@ -8,6 +8,9 @@
     <thead>
     <tr>
         <th>
+            Image
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Note)
         </th>
         <th>
@@ -26,8 +29,22 @@
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
+            <td>
+                @{ var images = item.UrlImages.Split(','); }
+                @if (images.Any(x => !string.IsNullOrEmpty(x)))
+                {
+                    if (images[0].Contains("mp4"))
+                    {
+                    }
+                    else
+                    {
+                        <img src="~/images/@images[0]" class="post-image" width="50" height="50" alt="@item.Title">
+                    }
+                }
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Note)
             </td>

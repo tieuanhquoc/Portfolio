@@ -8,10 +8,10 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Avatar)
+            @Html.DisplayNameFor(model => model.Username)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Username)
+            @Html.DisplayNameFor(model => model.Avatar)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Email)
@@ -36,11 +36,11 @@
     {
         <tr>
             <td>
-                <img src="~/images/@(string.IsNullOrEmpty(item.Avatar) ? "default-avatar.png" : item.Avatar)" width="50" height="50" alt="@item.Username">
+                @Html.DisplayFor(modelItem => item.Username)
             </td>
             <td>
                 <a>
-                    @Html.DisplayFor(modelItem => item.Username)
+                    <img src="~/images/@(string.IsNullOrEmpty(item.Avatar) ? "default-avatar.png" : item.Avatar)" width="50" height="50" alt="@item.Username">
                 </a>
             </td>
             <td>
@@ -67,7 +67,7 @@
                 @Html.DisplayFor(modelItem => item.Status)
             </td>
             <td>
-                @if (item.Status == UserStatus.Disabled)
+                @if (item.Status == UserStatus.Disabled || item.Status == UserStatus.Waiting)
                 {
                     <a asp-action="UpdateStatus" asp-route-userId="@item.Id">@UserStatus.Enabled.ToString()</a>
                 }

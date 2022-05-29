@@ -24,8 +24,7 @@
             @foreach (var item in Model ?? new List<UserSkill>())
             {
                 <div class="skill-card">
-                    @{ var images = item.Project.Split(',');}
-                    <img src="~/images/@images[0]" class="skill-img" alt="@item.Skill">
+                    <img src="img/html.png" class="skill-img" alt="">
                     <div class="skill-level">@item.PercentSkill</div>
                     <h1 class="skill-name">@item.Skill</h1>
                     <p class="skill-info">
